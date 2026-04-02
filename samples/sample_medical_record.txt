@@ -1,0 +1,50 @@
+PATIENT INTAKE FORM - CONFIDENTIAL MEDICAL RECORD
+
+Patient Name: Margaret Johnson
+Date of Birth: 07/15/1964
+Patient ID: MED-987654-A
+SSN: 456-78-9012
+Email: margaret.j@email.com
+Phone: (555) 234-5678
+Address: 1247 Oak Ridge Drive, Portland, OR 97201
+
+Insurance Information:
+Member ID: MEM-2024-456789
+Insurance Provider: HealthCare Plus
+Policy Number: HC-98765432
+Group Number: 12345
+
+CHIEF COMPLAINT:
+Patient presents with acute lower back pain and numbness in left leg.
+
+DIAGNOSIS:
+1. Lumbar disc herniation - L4-L5
+2. Sciatica
+3. Chronic pain syndrome
+
+TREATMENT PLAN:
+- Physical therapy 3x/week for 6 weeks
+- Prescription: Gabapentin 300mg TID
+- MRI imaging ordered
+- Follow-up appointment in 2 weeks
+
+PROVIDER NOTES:
+Patient is a 59-year-old female with a significant history of lower back problems. 
+Previous imaging from 2022 showed degenerative disc disease. Patient reports 
+exacerbation of symptoms after falling at home last week. Physical examination 
+reveals positive straight leg raise test and decreased motor function in left lower extremity.
+
+REFERRAL INFORMATION:
+- Orthopedic Surgery: Dr. Robert Martinez, Clinic: 555-891-2345
+- Physical Therapy: Portland Rehab Center, Contact: 555-678-9012
+
+CLINICAL ASSESSMENT:
+Patient meets criteria for surgical consultation given severity of symptoms and 
+neurological involvement. MRI results will guide further management decisions.
+
+Hospital Billing Code: 42847-ICD10-M51.16
+Procedure Code: 72141
+
+ATTENDING PHYSICIAN SIGNATURE: Dr. Sarah Chen, MD
+License: OR-MD-87654
+Date: 2026-04-02

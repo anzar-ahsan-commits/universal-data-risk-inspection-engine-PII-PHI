@@ -1,0 +1,135 @@
+{
+  "report_type": "Q1_2026_Sales_Performance_Summary",
+  "report_date": "2026-04-02",
+  "region": "Pacific Northwest",
+  "currency": "USD",
+  "data": {
+    "executive_summary": {
+      "total_revenue": 4750000,
+      "growth_rate_percent": 12.5,
+      "market_share_percent": 8.3,
+      "customer_count": 1247,
+      "average_transaction_value": 3808
+    },
+    "quarterly_breakdown": {
+      "q1_2025": {
+        "revenue": 4100000,
+        "units_sold": 1050,
+        "region_performance": "Above Target"
+      },
+      "q1_2026": {
+        "revenue": 4750000,
+        "units_sold": 1247,
+        "region_performance": "Exceeds Target"
+      }
+    },
+    "product_categories": [
+      {
+        "category_id": "CAT-001",
+        "category_name": "Hardware Solutions",
+        "revenue": 1900000,
+        "units": 425,
+        "margin_percent": 35.2
+      },
+      {
+        "category_id": "CAT-002",
+        "category_name": "Software Licenses",
+        "revenue": 1650000,
+        "units": 550,
+        "margin_percent": 42.8
+      },
+      {
+        "category_id": "CAT-003",
+        "category_name": "Service Contracts",
+        "revenue": 1200000,
+        "units": 272,
+        "margin_percent": 38.5
+      }
+    ],
+    "geographic_segments": [
+      {
+        "city": "Portland",
+        "state": "OR",
+        "revenue": 1560000,
+        "market_penetration": 22.5,
+        "dealer_count": 15
+      },
+      {
+        "city": "Seattle",
+        "state": "WA",
+        "revenue": 1800000,
+        "market_penetration": 28.3,
+        "dealer_count": 18
+      },
+      {
+        "city": "Eugene",
+        "state": "OR",
+        "revenue": 780000,
+        "market_penetration": 18.9,
+        "dealer_count": 8
+      },
+      {
+        "city": "Tacoma",
+        "state": "WA",
+        "revenue": 610000,
+        "market_penetration": 15.2,
+        "dealer_count": 6
+      }
+    ],
+    "top_performing_products": [
+      {
+        "product_sku": "HW-2024-PRO",
+        "product_name": "Professional Workstation Bundle",
+        "units_sold": 185,
+        "revenue": 925000,
+        "gross_margin": 324750
+      },
+      {
+        "product_sku": "SW-LIC-ENT",
+        "product_name": "Enterprise License Suite",
+        "units_sold": 142,
+        "revenue": 852000,
+        "gross_margin": 363936
+      },
+      {
+        "product_sku": "SVC-MAINT",
+        "product_name": "Maintenance & Support Contract",
+        "units_sold": 87,
+        "revenue": 435000,
+        "gross_margin": 167550
+      }
+    ],
+    "sales_pipeline": {
+      "opportunities_in_progress": 342,
+      "projected_close_value": 5200000,
+      "success_probability_percent": 72,
+      "average_deal_size": 15204
+    },
+    "performance_metrics": {
+      "win_rate_percent": 68.5,
+      "deal_velocity_days": 34,
+      "customer_retention_percent": 94.2,
+      "repeat_business_percent": 61.8,
+      "customer_satisfaction_nps": 72
+    },
+    "key_achievements": [
+      "Exceeded regional quota by 18%",
+      "Secured 3 new Fortune 500 contracts",
+      "Improved customer satisfaction score by 12 points",
+      "Launched 2 new product offerings successfully",
+      "Expanded market share in enterprise segment"
+    ],
+    "outlook_and_projections": {
+      "q2_2026_forecast_revenue": 5100000,
+      "q2_2026_growth_rate_percent": 7.4,
+      "h1_2026_projected_revenue": 9850000,
+      "full_year_2026_projection": 19700000
+    }
+  },
+  "data_quality": {
+    "last_updated": "2026-04-02T09:30:00Z",
+    "source_system": "SAP Enterprise Resource Planning",
+    "data_owner": "Regional Director",
+    "verification_status": "Verified and Approved"
+  }
+}
