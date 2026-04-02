@@ -8,6 +8,7 @@ import tempfile
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from scanner import inspect_file, process_inbound_folder, load_rule_definitions, apply_rules
+from app import app
 
 
 def test_inspect_file_with_sample_medium():
@@ -68,3 +69,44 @@ def test_custom_rule_override():
     assert result["decision"] in ["ALLOW", "QUARANTINE", "REJECT"]
 
     shutil.rmtree(tmpdir)
+
+
+def test_audit_endpoint_returns_entries_after_inspection(tmp_path):
+    # Ensure clean audit path and in-memory DB for test scope
+    audit_path = tmp_path / 'test_audit.db'
+    os.environ['AUDIT_DB_PATH'] = str(audit_path)
+
+    # perform scan and record audit via scanner API (no multipart file upload needed)
+    result = inspect_file('samples/sample_phi.txt')
+    assert result['decision'] in ['ALLOW', 'QUARANTINE', 'REJECT']
+
+    # fetch audit remark from Flask endpoint
+    client = app.test_client()
+    audit_resp = client.get('/audit')
+    assert audit_resp.status_code == 200
+    data = audit_resp.get_json()
+    assert isinstance(data, dict)
+    assert "audit_records" in data
+    assert isinstance(data["audit_records"], list)
+    assert len(data["audit_records"]) >= 1
+
+
+def test_inspect_file_records_audit_row(tmp_path):
+    audit_path = tmp_path / 'test_audit.db'
+    os.environ['AUDIT_DB_PATH'] = str(audit_path)
+
+    # run direct scanner call
+    result = inspect_file('samples/sample_phi.txt')
+    assert result['decision'] in ['ALLOW', 'QUARANTINE', 'REJECT']
+
+    # query DB directly to verify record exists
+    import sqlite3
+    conn = sqlite3.connect(str(audit_path))
+    try:
+        cur = conn.cursor()
+        cur.execute('SELECT id, file_name, decision FROM scans WHERE file_name = ?', ('sample_phi.txt',))
+        rows = cur.fetchall()
+        assert len(rows) >= 1
+        assert rows[0][2] in ['ALLOW', 'QUARANTINE', 'REJECT']
+    finally:
+        conn.close()

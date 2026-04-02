@@ -64,6 +64,25 @@ Open `http://127.0.0.1:5050` and submit files.
    - `rejected/` (REJECT)
    - `output/` (JSON report)
 
+### Audit log endpoint
+
+- Retrieve latest audit records:
+  ```bash
+  curl http://127.0.0.1:5050/audit
+  ```
+- Response shape:
+  ```json
+  {"audit_records": [ ... ]}
+  ```
+
+### Optional runtime settings
+
+- Set a custom audit database path:
+  ```bash
+  set AUDIT_DB_PATH=custom_audit.db  # Windows PowerShell
+  export AUDIT_DB_PATH=custom_audit.db  # Linux/macOS
+  ```
+
 ### CLI scan
 
 ```bash

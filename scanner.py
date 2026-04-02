@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import sqlite3
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 
@@ -44,6 +45,11 @@ DECISION_THRESHOLDS = {
 }
 
 DEFAULT_RULES_PATH = os.path.join("rules", "rules.json")
+AUDIT_DB_PATH = "audit.db"
+
+
+def get_audit_db_path() -> str:
+    return os.getenv("AUDIT_DB_PATH", AUDIT_DB_PATH)
 
 
 def load_rule_definitions(rules_path: Optional[str] = None) -> Dict[str, Any]:
@@ -368,6 +374,85 @@ def build_result(
     }
 
 
+def init_audit_db(db_path: Optional[str] = None) -> None:
+    if db_path is None:
+        db_path = get_audit_db_path()
+
+    conn = sqlite3.connect(db_path)
+    try:
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS scans (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT,
+                file_name TEXT,
+                decision TEXT,
+                severity TEXT,
+                risk_score INTEGER,
+                findings TEXT,
+                metadata TEXT,
+                report_file TEXT
+            )
+            """
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def record_audit(result: Dict[str, Any], db_path: Optional[str] = None) -> None:
+    if db_path is None:
+        db_path = get_audit_db_path()
+    init_audit_db(db_path)
+    conn = sqlite3.connect(db_path)
+    try:
+        conn.execute(
+            "INSERT INTO scans (timestamp,file_name,decision,severity,risk_score,findings,metadata,report_file) VALUES (?,?,?,?,?,?,?,?)",
+            (
+                result.get("timestamp"),
+                result.get("file_name"),
+                result.get("decision"),
+                result.get("severity"),
+                result.get("risk_score"),
+                json.dumps(result.get("findings", {})),
+                json.dumps(result.get("metadata", {})),
+                result.get("report_file"),
+            ),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def fetch_audit(db_path: Optional[str] = None) -> List[Dict[str, Any]]:
+    if db_path is None:
+        db_path = get_audit_db_path()
+
+    if not os.path.exists(db_path):
+        return []
+
+    conn = sqlite3.connect(db_path)
+    try:
+        cursor = conn.execute("SELECT id, timestamp, file_name, decision, severity, risk_score, findings, metadata, report_file FROM scans ORDER BY id DESC")
+        rows = cursor.fetchall()
+        audits = []
+        for row in rows:
+            audits.append({
+                "id": row[0],
+                "timestamp": row[1],
+                "file_name": row[2],
+                "decision": row[3],
+                "severity": row[4],
+                "risk_score": row[5],
+                "findings": json.loads(row[6]) if row[6] else {},
+                "metadata": json.loads(row[7]) if row[7] else {},
+                "report_file": row[8],
+            })
+        return audits
+    finally:
+        conn.close()
+
+
 def save_result(result: Dict[str, Any]) -> str:
     output_dir = "output"
     os.makedirs(output_dir, exist_ok=True)
@@ -472,6 +557,10 @@ def inspect_file(file_path: str, metadata: Optional[Dict[str, str]] = None, rule
     output_path = save_result(result)
     result["report_file"] = output_path
     result["rules_source"] = rules_path or DEFAULT_RULES_PATH
+
+    # Persist audit record to local SQLite database
+    record_audit(result)
+
     return result
 
 

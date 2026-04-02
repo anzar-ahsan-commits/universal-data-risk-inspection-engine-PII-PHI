@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, jsonify
-from scanner import inspect_file, process_inbound_folder
+from scanner import inspect_file, process_inbound_folder, fetch_audit
 
 app = Flask(__name__)
 
@@ -64,6 +64,15 @@ def process_inbound():
     try:
         summary = process_inbound_folder(inbound_dir="inbound", base_dir=".")
         return jsonify(summary)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/audit", methods=["GET"])
+def audit_reports():
+    try:
+        audits = fetch_audit()
+        return jsonify({"audit_records": audits})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
