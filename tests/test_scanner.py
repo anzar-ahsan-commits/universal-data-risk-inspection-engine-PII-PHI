@@ -1,7 +1,11 @@
 import os
 import json
 import shutil
+import sys
 import tempfile
+
+# Ensure module path is available when running in CI with nested checkout paths.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from scanner import inspect_file, process_inbound_folder, load_rule_definitions, apply_rules
 
