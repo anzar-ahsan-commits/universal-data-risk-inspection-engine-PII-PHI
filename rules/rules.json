@@ -1,0 +1,38 @@
+{
+  "patterns": {
+    "email": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b",
+    "phone": "\\b(?:\\+1[-.\\s]?)?(?:\\(?\\d{3}\\)?[-.\\s]?)\\d{3}[-.\\s]?\\d{4}\\b",
+    "ssn": "\\b\\d{3}-\\d{2}-\\d{4}\\b",
+    "dob": "\\b(?:0?[1-9]|1[0-2])[/-](?:0?[1-9]|[12]\\d|3[01])[/-](?:19|20)\\d{2}\\b",
+    "member_id": "\\b(?:member[\\s_-]?id[:\\s]*)([A-Za-z0-9-]+)\\b",
+    "mrn": "\\b(?:mrn[:\\s]*)([A-Za-z0-9-]+)\\b",
+    "account": "\\b(?:account|acct)[_ -]*(?:number|no)[:\\s]*([A-Za-z0-9-]+)\\b"
+  },
+  "phi_keywords": [
+    "patient",
+    "diagnosis",
+    "treatment",
+    "dob",
+    "member id",
+    "mrn",
+    "medical record",
+    "insurance",
+    "claim",
+    "provider",
+    "hospital"
+  ],
+  "risk_weights": {
+    "ssn": 100,
+    "email": 20,
+    "phone": 15,
+    "dob": 15,
+    "member_id": 25,
+    "mrn": 25,
+    "phi_keywords": 5,
+    "account": 30
+  },
+  "decision_thresholds": {
+    "reject": 150,
+    "quarantine": 50
+  }
+}

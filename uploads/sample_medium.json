@@ -1,0 +1,8 @@
+{
+  "reportType": "member_export",
+  "memberName": "Jane Smith",
+  "email": "jane.smith@test.com",
+  "phone": "972-555-2222",
+  "dob": "08/19/1992",
+  "notes": "Patient follow-up pending with provider"
+}

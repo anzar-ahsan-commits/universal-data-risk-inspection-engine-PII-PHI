@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 32px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .decision {
+            display: inline-block;
+            margin: 10px 0 12px 0;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .ALLOW {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .QUARANTINE {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .REJECT {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .severity {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            background: #e5e7eb;
+            color: #111827;
+        }
+        .downstream {
+            margin-top: 14px;
+            padding: 12px;
+            border-left: 4px solid #2563eb;
+            background: #eff6ff;
+            border-radius: 4px;
+        }
+        .reason {
+            margin-top: 14px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+            color: #111827;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        .section {
+            margin-top: 24px;
+        }
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+        }
+        .meta-card {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        .meta-card strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            vertical-align: top;
+        }
+        th {
+            background: #f9fafb;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+        }
+        a.button:hover {
+            background: #1d4ed8;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        ul.flag-list {
+            margin: 0;
+            padding-left: 18px;
+        }
+        ul.flag-list li {
+            margin-bottom: 4px;
+        }
+        .empty {
+            color: #6b7280;
+            font-style: italic;
+        }
+        @media (max-width: 800px) {
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .watermark {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if error %}
+            <h1>Inspection Result</h1>
+            <div class="error">{{ error }}</div>
+            <a href="/" class="button">Back</a>
+        {% else %}
+            <h1>Pre-TIBCO Inspection Result</h1>
+
+            <div>
+                <span class="decision {{ result.decision }}">
+                    Decision: {{ result.decision }}
+                </span>
+                <span class="severity">
+                    Severity: {{ result.severity }}
+                </span>
+            </div>
+
+            <div class="downstream">
+                <strong>Downstream Action:</strong> {{ result.downstream_action }}
+            </div>
+
+            <div class="reason">
+                <strong>Reason:</strong> {{ result.reason }}
+            </div>
+
+            <div class="section">
+                <h2>Submission Metadata</h2>
+                <div class="meta-grid">
+                    <div class="meta-card">
+                        <strong>Source System</strong>
+                        {{ result.metadata.source_system }}
+                    </div>
+                    <div class="meta-card">
+                        <strong>Destination System</strong>
+                        {{ result.metadata.destination_system }}
+                    </div>
+                    <div class="meta-card">
+                        <strong>Interface Name</strong>
+                        {{ result.metadata.interface_name }}
+                    </div>
+                    <div class="meta-card">
+                        <strong>Submitted By</strong>
+                        {{ result.metadata.submitted_by }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>File Details</h2>
+                <div class="meta-grid">
+                    <div class="meta-card">
+                        <strong>File Name</strong>
+                        {{ result.file_name }}
+                    </div>
+                    <div class="meta-card">
+                        <strong>File Type</strong>
+                        {{ result.file_type }}
+                    </div>
+                    <div class="meta-card">
+                        <strong>Total Hits</strong>
+                        {{ result.total_hits }}
+                    </div>
+                    <div class="meta-card">
+                        <strong>Timestamp</strong>
+                        {{ result.timestamp }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Detection Findings</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicator</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in result.findings.items() %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Flagged Data Preview</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicator</th>
+                            <th>Flagged / Masked Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, values in result.flagged_data.items() %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>
+                                {% if values %}
+                                    <ul class="flag-list">
+                                        {% for value in values %}
+                                            <li>{{ value }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <span class="empty">No values flagged</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Generated Report</h2>
+                <p><code>{{ result.report_file }}</code></p>
+            </div>
+
+            <a href="/" class="button">Inspect Another File</a>
+        <div class="watermark">Created by Anzar Ahsan</div>
+        {% endif %}
+    </div>
+</body>
+</html>

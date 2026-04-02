@@ -1,0 +1,8 @@
+Patient Name: John Doe
+DOB: 04/12/1988
+Email: john.doe@email.com
+Phone: 214-555-7890
+SSN: 123-45-6789
+Diagnosis: Diabetes
+Member ID: MEM-998877
+MRN: MRN-456123

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHI/PII Inspection Gateway</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 32px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #444;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+        .field.full {
+            grid-column: 1 / -1;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        input[type="text"], input[type="file"] {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        .note {
+            margin-top: 18px;
+            font-size: 14px;
+            color: #666;
+        }
+        code {
+            background: #eef2ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .subhead {
+            margin-top: 24px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .flow-panel {
+            margin-top: 28px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .step {
+            background: white;
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .step strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #1d4ed8;
+        }
+        .watermark {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+        @media (max-width: 800px) {
+            .grid, .flow-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PHI/PII Inspection Gateway</h1>
+        <p>
+            Upload a file and inspect it before downstream transmission.
+            The solution implements a configurable deterministic PHI/PII controls layer for structured and unstructured data.
+        </p>
+
+        <form action="/inspect" method="post" enctype="multipart/form-data">
+            <div class="subhead">Submission Details</div>
+
+            <div class="grid">
+                <div class="field">
+                    <label for="source_system">Source System</label>
+                    <input type="text" id="source_system" name="source_system" placeholder="e.g. Claims Export" required>
+                </div>
+
+                <div class="field">
+                    <label for="destination_system">Destination System</label>
+                    <input type="text" id="destination_system" name="destination_system" value="TIBCO" required>
+                </div>
+
+                <div class="field">
+                    <label for="interface_name">Interface Name</label>
+                    <input type="text" id="interface_name" name="interface_name" placeholder="e.g. Member Enrollment Feed" required>
+                </div>
+
+                <div class="field">
+                    <label for="submitted_by">Submitted By</label>
+                    <input type="text" id="submitted_by" name="submitted_by" placeholder="e.g. QE Team / Anzar" required>
+                </div>
+
+                <div class="field full">
+                    <label for="file">Select File</label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+            </div>
+
+            <button type="submit">Inspect Before TIBCO Transmission</button>
+        </form>
+
+        <div class="note">
+            Supported file types: <code>.txt</code>, <code>.csv</code>, <code>.json</code>
+        </div>
+
+        <div class="flow-panel">
+            <div class="subhead" style="margin-top: 0;">Solution Flow</div>
+            <div class="flow-steps">
+                <div class="step">
+                    <strong>1. Submit</strong>
+                    File and metadata are submitted into the gateway.
+                </div>
+                <div class="step">
+                    <strong>2. Parse</strong>
+                    The file is read and normalized for inspection.
+                </div>
+                <div class="step">
+                    <strong>3. Detect</strong>
+                    Deterministic PHI/PII rules scan for sensitive indicators.
+                </div>
+                <div class="step">
+                    <strong>4. Decide</strong>
+                    The file is classified as Allow, Quarantine, or Reject.
+                </div>
+                <div class="step">
+                    <strong>5. Route</strong>
+                    The file is routed to destination, quarantine, or reject path.
+                </div>
+            </div>
+        </div>
+        <div class="watermark">Created by Anzar Ahsan</div>
+    </div>
+</body>
+</html>
